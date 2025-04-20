@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "autosync"
+version = "0.1.0"
+description = ""
+authors = ["evan@stocks.cafe"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+litestar = {extras = ["standard"], version = "^2.14.0"}
+longport = "^2.1.12"
+requests = "^2.31.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+mypy = "^1.2.0"
+ruff = "^0.0.263"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

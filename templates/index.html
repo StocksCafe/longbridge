@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}AutoSync Settings{% endblock %}
+
+{% block content %}
+    <h3 class="text-light mb-4">AutoSync Settings</h2>
+
+    <form action="/save-settings" method="POST" id="settings-form">
+        <!-- STOCKSCAFE_USER_ID -->
+        <div class="mb-3 row">
+            <label for="stockscafe_user_id" class="col-sm-4 col-form-label text-light"><strong>STOCKSCAFE_USER_ID</strong></label>
+            <div class="col-sm-8">
+                <input type="text" id="stockscafe_user_id" name="stockscafe_user_id" class="form-control" value="{{ stockscafe_user_id }}" required>
+            </div>
+        </div>
+
+        <!-- STOCKSCAFE_LABEL_ID -->
+        <div class="mb-3 row">
+            <label for="stockscafe_label_id" class="col-sm-4 col-form-label text-light"><strong>STOCKSCAFE_LABEL_ID</strong></label>
+            <div class="col-sm-8">
+                <input type="text" id="stockscafe_label_id" name="stockscafe_label_id" class="form-control" value="{{ stockscafe_label_id }}" required>
+            </div>
+        </div>
+
+        <!-- STOCKSCAFE_SYNC_API_KEY -->
+        <div class="mb-3 row">
+            <label for="stockscafe_sync_api_key" class="col-sm-4 col-form-label text-light"><strong>STOCKSCAFE_SYNC_API_KEY</strong></label>
+            <div class="col-sm-8">
+                <input type="text" id="stockscafe_sync_api_key" name="stockscafe_sync_api_key" class="form-control" value="{{ stockscafe_sync_api_key }}" required>
+            </div>
+        </div>
+
+        <!-- LONGPORT_APP_KEY -->
+        <div class="mb-3 row">
+            <label for="longport_app_key" class="col-sm-4 col-form-label text-light"><strong>LONGPORT_APP_KEY</strong></label>
+            <div class="col-sm-8">
+                <input type="text" id="longport_app_key" name="longport_app_key" class="form-control" value="{{ longport_app_key }}" required>
+            </div>
+        </div>
+
+        <!-- LONGPORT_APP_SECRET -->
+        <div class="mb-3 row">
+            <label for="longport_app_secret" class="col-sm-4 col-form-label text-light"><strong>LONGPORT_APP_SECRET</strong></label>
+            <div class="col-sm-8">
+                <input type="text" id="longport_app_secret" name="longport_app_secret" class="form-control" value="{{ longport_app_secret }}" required>
+            </div>
+        </div>
+
+        <!-- LONGPORT_ACCESS_TOKEN -->
+        <div class="mb-3 row">
+            <label for="longport_access_token" class="col-sm-4 col-form-label text-light"><strong>LONGPORT_ACCESS_TOKEN</strong></label>
+            <div class="col-sm-8">
+                <input type="text" id="longport_access_token" name="longport_access_token" class="form-control" value="{{ longport_access_token }}" required>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="button-container mt-4">
+            <button type="submit" class="btn btn-primary w-50">Update Settings</button>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('settings-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+    
+            // Create the data object from the form fields
+            const formData = {
+                stockscafe_user_id: document.getElementById('stockscafe_user_id').value,
+                stockscafe_label_id: document.getElementById('stockscafe_label_id').value,
+                stockscafe_sync_api_key: document.getElementById('stockscafe_sync_api_key').value,
+                longport_app_key: document.getElementById('longport_app_key').value,
+                longport_app_secret: document.getElementById('longport_app_secret').value,
+                longport_access_token: document.getElementById('longport_access_token').value
+            };
+    
+            // Send the data to the server
+            fetch('/save-settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // Show success or failure message
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        });
+    </script>    
+
+    <div class="button-container mt-4 text-center">
+        <button class="btn btn-success w-50" id="sync-button">Sync LongBridge Data</button>
+    </div>
+
+    <p id="status-message" style="color: #fff;"></p>
+
+    <script>
+        document.getElementById('sync-button').addEventListener('click', function() {
+            // Show loading or status message
+            document.getElementById('status-message').textContent = "Syncing... Please wait.";
+
+            // Create the data object from the form fields
+            const formData = {
+                stockscafe_user_id: document.getElementById('stockscafe_user_id').value,
+                stockscafe_label_id: document.getElementById('stockscafe_label_id').value,
+                stockscafe_sync_api_key: document.getElementById('stockscafe_sync_api_key').value,
+                longport_app_key: document.getElementById('longport_app_key').value,
+                longport_app_secret: document.getElementById('longport_app_secret').value,
+                longport_access_token: document.getElementById('longport_access_token').value
+            };
+
+            fetch('/sync-longbridge', {
+                method: 'POST', // Use POST request to sync data
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // body: JSON.stringify({ action: "sync" }) // Payload (can be expanded if needed)
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status-message').textContent = data.message;
+            })
+            .catch(error => {
+                document.getElementById('status-message').textContent = "Error occurred: " + error;
+            });
+        });
+    </script>
+{% endblock %}
