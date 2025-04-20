@@ -13,7 +13,7 @@ For Mac -> https://docs.docker.com/desktop/setup/install/mac-install/
 For Windows -> https://docs.docker.com/desktop/setup/install/windows-install/
 For Linux -> https://docs.docker.com/desktop/setup/install/linux/ 
 
-4) From command prompt, goto the directory where code is cloned and run "chmod +x autosync.sh"
+4) From command prompt, goto the directory (i.e. "cd longbridge") where code is cloned and run "chmod +x autosync.sh"
 
 5) Then run "./autosync.sh"
 
