@@ -13,33 +13,36 @@ from litestar.contrib.jinja import JinjaTemplateEngine
 # https://github.com/app-generator/flask-atlantis-dark/blob/master/apps/templates/home/index.html
 # https://flask-atlantis-dark.appseed-srv1.com/index
 
+def _load_settings():
+    default_value = "Please Update"
+    dotenv_path = find_dotenv()
+    load_dotenv(dotenv_path)
+    stockscafe_user_id = get_key(key_to_get="STOCKSCAFE_USER_ID", dotenv_path=dotenv_path) or default_value
+    stockscafe_label_id = get_key(key_to_get="STOCKSCAFE_LABEL_ID", dotenv_path=dotenv_path) or default_value
+    stockscafe_sync_api_key = get_key(key_to_get="STOCKSCAFE_SYNC_API_KEY", dotenv_path=dotenv_path) or default_value
+    longport_app_key = get_key(key_to_get="LONGPORT_APP_KEY", dotenv_path=dotenv_path) or default_value
+    longport_app_secret = get_key(key_to_get="LONGPORT_APP_SECRET", dotenv_path=dotenv_path) or default_value
+    longport_access_token = get_key(key_to_get="LONGPORT_ACCESS_TOKEN", dotenv_path=dotenv_path) or default_value
+    # read from .env and update os
+    os.environ["STOCKSCAFE_USER_ID"] = stockscafe_user_id
+    os.environ["STOCKSCAFE_LABEL_ID"] = stockscafe_label_id
+    os.environ["STOCKSCAFE_SYNC_API_KEY"] = stockscafe_sync_api_key
+    os.environ["LONGPORT_APP_KEY"] = longport_app_key
+    os.environ["LONGPORT_APP_SECRET"] = longport_app_secret
+    os.environ["LONGPORT_ACCESS_TOKEN"] = longport_access_token
+
 @get("/")
 async def main() -> Template:
     try:
-        default_value = "Please Update"
-        dotenv_path = find_dotenv()
-        load_dotenv(dotenv_path)
-        stockscafe_user_id = get_key(key_to_get="STOCKSCAFE_USER_ID", dotenv_path=dotenv_path) or default_value
-        stockscafe_label_id = get_key(key_to_get="STOCKSCAFE_LABEL_ID", dotenv_path=dotenv_path) or default_value
-        stockscafe_sync_api_key = get_key(key_to_get="STOCKSCAFE_SYNC_API_KEY", dotenv_path=dotenv_path) or default_value
-        longport_app_key = get_key(key_to_get="LONGPORT_APP_KEY", dotenv_path=dotenv_path) or default_value
-        longport_app_secret = get_key(key_to_get="LONGPORT_APP_SECRET", dotenv_path=dotenv_path) or default_value
-        longport_access_token = get_key(key_to_get="LONGPORT_ACCESS_TOKEN", dotenv_path=dotenv_path) or default_value
-        # read from .env and update os
-        os.environ["STOCKSCAFE_USER_ID"] = stockscafe_user_id
-        os.environ["STOCKSCAFE_LABEL_ID"] = stockscafe_label_id
-        os.environ["STOCKSCAFE_SYNC_API_KEY"] = stockscafe_sync_api_key
-        os.environ["LONGPORT_APP_KEY"] = longport_app_key
-        os.environ["LONGPORT_APP_SECRET"] = longport_app_secret
-        os.environ["LONGPORT_ACCESS_TOKEN"] = longport_access_token
+        _load_settings()
         return Template("index.html", context={
             "name": "Evan",
-            "stockscafe_user_id": stockscafe_user_id,
-            "stockscafe_label_id": stockscafe_label_id,
-            "stockscafe_sync_api_key": stockscafe_sync_api_key,
-            "longport_app_key": longport_app_key,
-            "longport_app_secret": longport_app_secret,
-            "longport_access_token": longport_access_token
+            "stockscafe_user_id": os.environ["STOCKSCAFE_USER_ID"],
+            "stockscafe_label_id": os.environ["STOCKSCAFE_LABEL_ID"],
+            "stockscafe_sync_api_key": os.environ["STOCKSCAFE_SYNC_API_KEY"],
+            "longport_app_key": os.environ["LONGPORT_APP_KEY"],
+            "longport_app_secret": os.environ["LONGPORT_APP_SECRET"],
+            "longport_access_token": os.environ["LONGPORT_ACCESS_TOKEN"]
         })
     except Exception as e:
         print(f"An error occurred: {e}")

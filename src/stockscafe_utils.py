@@ -2,15 +2,14 @@ import os
 import requests
 
 sync_url = "https://api.stocks.cafe/sync.json"
-def push_data(order_id, body) -> str:
+def push_data(order_id, body, type = 3) -> str:
     try:
-        user_id = os.getenv("STOCKSCAFE_USER_ID")
-        api_key = os.getenv("STOCKSCAFE_SYNC_API_KEY")
         data = {
-            "sync_api_user": user_id, 
-            "sync_api_key": api_key,
+            "sync_api_user": os.getenv("STOCKSCAFE_USER_ID"), 
+            "sync_api_label_id": os.getenv("STOCKSCAFE_LABEL_ID"),
+            "sync_api_key": os.getenv("STOCKSCAFE_SYNC_API_KEY"),
             "longbridge_id": str(order_id),
-            "type": str(3),
+            "type": str(type),
             "body": body
         }
         response = requests.post(sync_url + "?l=longbridge", json=data)
