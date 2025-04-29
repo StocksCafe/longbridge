@@ -1,5 +1,8 @@
 FROM python:3.12-slim
 
+# required for pytesseract
+RUN apt-get update && apt-get -y install tesseract-ocr 
+
 # Set the working directory inside the container
 WORKDIR /app
 

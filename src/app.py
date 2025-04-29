@@ -8,6 +8,14 @@ from litestar.static_files import create_static_files_router
 from litestar.response import Template
 from litestar.template.config import TemplateConfig
 from litestar.contrib.jinja import JinjaTemplateEngine
+from docling.document_converter import DocumentConverter
+from docling.datamodel.base_models import InputFormat
+from docling.datamodel.pipeline_options import (
+    PdfPipelineOptions,
+    TesseractOcrOptions,
+    TesseractCliOcrOptions,
+)
+from docling.document_converter import DocumentConverter, PdfFormatOption
 
 # Use following template
 # https://github.com/app-generator/flask-atlantis-dark/blob/master/apps/templates/home/index.html
@@ -47,6 +55,48 @@ async def main() -> Template:
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+
+@get("/docling-easyocr")
+async def docling_easyocr() -> str:
+    # source = "https://arxiv.org/pdf/2408.09869"  # document per local path or URL
+    doc_path = Path("/app/pdf/Y_L01.pdf") # Replace with your PDF file path
+    if doc_path.exists():
+        converter = DocumentConverter()
+        result = converter.convert(doc_path)
+        value = result.document.export_to_markdown()  # output: "## Docling Technical Report[...]"
+        return value
+    else:
+        return "Path does not exist."
+
+@get("/docling-tesseract")
+async def docling_tesseract() -> str:
+    try:
+        # source = "https://arxiv.org/pdf/2408.09869"  # document per local path or URL
+        # doc_path = Path("/app/pdf/docling.pdf") # Replace with your PDF file path
+        doc_path = Path("/app/pdf/Y_L01.pdf")
+        # Set lang=["auto"] with a tesseract OCR engine: TesseractOcrOptions, TesseractCliOcrOptions
+        # ocr_options = TesseractOcrOptions(lang=["auto"])
+        ocr_options = TesseractCliOcrOptions(lang=["auto"])
+
+        pipeline_options = PdfPipelineOptions(
+            do_ocr=True, force_full_page_ocr=True, ocr_options=ocr_options
+        )
+
+        converter = DocumentConverter(
+            format_options={
+                InputFormat.PDF: PdfFormatOption(
+                    pipeline_options=pipeline_options,
+                )
+            }
+        )
+
+        doc = converter.convert(doc_path).document
+        md = doc.export_to_markdown()
+        print(md)
+        return md
+    except Exception as e:
+        print(e)
+        return e
 
 @post("/sync-longbridge")
 async def sync_longbridge(request: Request) -> dict:
@@ -98,7 +148,7 @@ async def save_settings(request: Request) -> dict:
 app = Litestar(
     route_handlers=[
         create_static_files_router(path="/static", directories=["static"]), # /static is available on /static
-        main, sync_longbridge, save_settings],
+        main, sync_longbridge, save_settings, test_docling, docling_easyocr],
     template_config=TemplateConfig(
         directory=Path("templates"),
         engine=JinjaTemplateEngine,
