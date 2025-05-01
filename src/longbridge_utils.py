@@ -31,7 +31,7 @@ def get_cash_flow() -> str: # get and push
                 formatted_timestamp = dt.strftime("%Y%m%d%H%M%S")
                 print("formatted_timestamp", formatted_timestamp)
                 print("name:", name)
-                order_id = int(formatted_timestamp) + hash(name)
+                order_id = int(formatted_timestamp) + abs(hash(name))
                 print("order_id:", order_id)
                 print()
                 push_data(order_id, body, type = 4)
