@@ -39,3 +39,19 @@ Note: It will sync both cash transactions (both deposits and withdrawal) and ord
 4) Open browser (recommended Chrome) and goto http://localhost:8000/
 
 5) Click on "Sync LongBridge Data"
+
+## [Optional] Docker Commands
+
+1) "docker exec -it autosync bash" => Allow you to enter the container
+
+## [Optional] Tesseract Commands
+
+1) "tesseract --print-parameters | grep tessdata" => Look for "tessdata-dir /usr/share/tesseract-ocr/5/tessdata/"
+
+2) Try running Tesseract manually on any image with:
+
+"tesseract test_image.png output -l jpn"
+
+If that fails with the same language error, it confirms the issue is not with docling but with the Tesseract installation.
+
+4) "tesseract --list-langs" -> List langauages supported

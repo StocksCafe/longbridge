@@ -59,7 +59,8 @@ async def main() -> Template:
 @get("/docling-easyocr")
 async def docling_easyocr() -> str:
     # source = "https://arxiv.org/pdf/2408.09869"  # document per local path or URL
-    doc_path = Path("/app/pdf/Y_L01.pdf") # Replace with your PDF file path
+    # doc_path = Path("/app/pdf/Y_L01.pdf") # Replace with your PDF file path
+    doc_path = Path("/app/pdf/MKT-EF-DAR-JP-0104.pdf")
     if doc_path.exists():
         converter = DocumentConverter()
         result = converter.convert(doc_path)
@@ -73,10 +74,13 @@ async def docling_tesseract() -> str:
     try:
         # source = "https://arxiv.org/pdf/2408.09869"  # document per local path or URL
         # doc_path = Path("/app/pdf/docling.pdf") # Replace with your PDF file path
-        doc_path = Path("/app/pdf/Y_L01.pdf")
+        # doc_path = Path("/app/pdf/Y_L01.pdf")
+        # doc_path = Path("/app/pdf/MKT-EF-DAR-JP-0104.pdf")
+        # doc_path = Path("/app/pdf/MKT-EF-DAR-JP-0134.pdf")
+        doc_path = Path("/app/pdf/MKT-EF-DAR-JP-0135.pdf")
         # Set lang=["auto"] with a tesseract OCR engine: TesseractOcrOptions, TesseractCliOcrOptions
-        # ocr_options = TesseractOcrOptions(lang=["auto"])
-        ocr_options = TesseractCliOcrOptions(lang=["auto"])
+        ocr_options = TesseractOcrOptions(lang=["auto"])
+        # ocr_options = TesseractCliOcrOptions(lang=["auto"])
 
         pipeline_options = PdfPipelineOptions(
             do_ocr=True, force_full_page_ocr=True, ocr_options=ocr_options
@@ -148,7 +152,7 @@ async def save_settings(request: Request) -> dict:
 app = Litestar(
     route_handlers=[
         create_static_files_router(path="/static", directories=["static"]), # /static is available on /static
-        main, sync_longbridge, save_settings, test_docling, docling_easyocr],
+        main, sync_longbridge, save_settings, docling_tesseract, docling_easyocr],
     template_config=TemplateConfig(
         directory=Path("templates"),
         engine=JinjaTemplateEngine,
