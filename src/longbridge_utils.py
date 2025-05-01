@@ -19,16 +19,22 @@ def get_cash_flow() -> str: # get and push
         for record in records:
             # Use regex to find the business_time field
             match = re.search(r'business_time:\s*"([^"]+)"', record)
+            print(record)
             if match:
                 business_time = match.group(1)
+                name_match = re.search(r'transaction_flow_name:\s*"([^"]+)"', record)
+                name = name_match.group(1)
                 # Parse the timestamp
                 dt = datetime.strptime(business_time, "%Y-%m-%dT%H:%M:%SZ")
                 body = "CashFlow {" + record + "}"
                 # Reformat it to the desired format
                 formatted_timestamp = dt.strftime("%Y%m%d%H%M%S")
-                print("formatted_timestamp / order_id:", formatted_timestamp)
+                print("formatted_timestamp", formatted_timestamp)
+                print("name:", name)
+                order_id = int(formatted_timestamp) + hash(name)
+                print("order_id:", order_id)
                 print()
-                push_data(formatted_timestamp, body, type = 4)
+                push_data(order_id, body, type = 4)
             else:
                 print("business_time not found.")
         return str("Test")
