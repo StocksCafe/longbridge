@@ -20,8 +20,8 @@ This project is to assist users in pulling data from their longbridge brokerage 
 6) Open browser (recommended Chrome) and goto http://localhost:8000/
 
 7) Enter values for the fields 
-https://stocks.cafe/user/sync_api_key -> To get STOCKSCAFE_USER_ID, STOCKSCAFE_LABEL_ID and STOCKSCAFE_SYNC_API_KEY
-https://open.longportapp.com/en/account -> To get LONGPORT_APP_KEY, LONGPORT_APP_SECRET and LONGPORT_ACCESS_TOKEN
+- https://stocks.cafe/user/sync_api_key -> To get STOCKSCAFE_USER_ID, STOCKSCAFE_LABEL_ID and STOCKSCAFE_SYNC_API_KEY
+- https://open.longportapp.com/en/account -> To get LONGPORT_APP_KEY, LONGPORT_APP_SECRET and LONGPORT_ACCESS_TOKEN
 
 8) Click "Update Settings" then click "Sync LongBridge Data"
 Note: It will sync both cash transactions (both deposits and withdrawal) and orders (including stocks and options)
