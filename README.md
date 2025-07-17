@@ -7,9 +7,9 @@ This project is to assist users in pulling data from their longbridge brokerage 
 1) Apply for LongBridge API (https://open.longportapp.com/en/)
 
 2) Install Docker on your computer
-For Mac -> https://docs.docker.com/desktop/setup/install/mac-install/
-For Windows -> https://docs.docker.com/desktop/setup/install/windows-install/
-For Linux -> https://docs.docker.com/desktop/setup/install/linux/ 
+- For Mac -> https://docs.docker.com/desktop/setup/install/mac-install/
+- For Windows -> https://docs.docker.com/desktop/setup/install/windows-install/
+- For Linux -> https://docs.docker.com/desktop/setup/install/linux/ 
 
 3) Open command prompt, goto directory that you want for StocksCafe, run "git clone https://github.com/StocksCafe/longbridge"
 
