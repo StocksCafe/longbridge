@@ -39,3 +39,11 @@ Note: It will sync both cash transactions (both deposits and withdrawal) and ord
 4) Open browser (recommended Chrome) and goto http://localhost:8000/
 
 5) Click on "Sync LongBridge Data"
+
+## Token Expired
+
+1) If you see some "Token Expired" error after clicking the "Sync LongBridge Data"
+
+2) Simply go to this page (https://open.longportapp.com/en/account) and click "Reset Token"
+
+3) Then update LONGPORT_ACCESS_TOKEN and try clicking on "Sync LongBridge Data". It should now work.
