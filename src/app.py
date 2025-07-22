@@ -13,7 +13,6 @@ from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import (
     PdfPipelineOptions,
     TesseractOcrOptions,
-    TesseractCliOcrOptions,
 )
 from docling.document_converter import DocumentConverter, PdfFormatOption
 
