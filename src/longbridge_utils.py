@@ -11,7 +11,7 @@ def get_cash_flow() -> str: # get and push
         ctx = TradeContext(config)    
         now = datetime.now()
         resp = ctx.cash_flow(
-            start_at = now - relativedelta(years=5),
+            start_at = now - relativedelta(years=20),
             end_at = now,
         )
         raw_data = str(resp)
@@ -19,7 +19,6 @@ def get_cash_flow() -> str: # get and push
         for record in records:
             # Use regex to find the business_time field
             match = re.search(r'business_time:\s*"([^"]+)"', record)
-            print(record)
             if match:
                 business_time = match.group(1)
                 name_match = re.search(r'transaction_flow_name:\s*"([^"]+)"', record)
@@ -29,11 +28,8 @@ def get_cash_flow() -> str: # get and push
                 body = "CashFlow {" + record + "}"
                 # Reformat it to the desired format
                 formatted_timestamp = dt.strftime("%Y%m%d%H%M%S")
-                print("formatted_timestamp", formatted_timestamp)
-                print("name:", name)
+                print(body)
                 order_id = int(formatted_timestamp) + abs(hash(name))
-                print("order_id:", order_id)
-                print()
                 push_data(order_id, body, type = 4)
             else:
                 print("business_time not found.")
@@ -44,7 +40,12 @@ def get_cash_flow() -> str: # get and push
     
 def get_orders_history(ctx) -> str:
     try:
-        resp = ctx.history_orders(status = [OrderStatus.Filled])
+        now = datetime.now()
+        resp = ctx.history_orders(
+            status = [OrderStatus.Filled],
+            start_at = now - relativedelta(years=20),
+            end_at = now,
+        )
         return str(resp)
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -57,6 +58,9 @@ def parse_orders_history() -> str:
         # cash flow data - pull from longbridge and push to StocksCafe 
         get_cash_flow()
         data = get_orders_history(ctx)
+        print("===== Order History START =====")
+        print(data)
+        print("===== Order History END =====")
         if data:
             order_ids = re.findall(r'order_id:\s*"(\d+)"', data)
             # Insert orders into DB

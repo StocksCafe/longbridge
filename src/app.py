@@ -50,6 +50,7 @@ async def main() -> Template:
 
 @post("/sync-longbridge")
 async def sync_longbridge(request: Request) -> dict:
+    # When "Sync LongBridge Data" button is clicked
     try:
         form_data = await request.json()
         _save_settings(form_data)
