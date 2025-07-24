@@ -1,5 +1,6 @@
 import re
 import ast
+import hashlib
 from src.stockscafe_utils import push_data, process_data
 from longport.openapi import TradeContext, Config, OrderStatus
 from datetime import datetime
@@ -28,8 +29,10 @@ def get_cash_flow() -> str: # get and push
                 body = "CashFlow {" + record + "}"
                 # Reformat it to the desired format
                 formatted_timestamp = dt.strftime("%Y%m%d%H%M%S")
-                print(body)
-                order_id = int(formatted_timestamp) + abs(hash(name))
+                baseLine = 1000000000000000 # (15 digits)
+                hash_value = abs(int(hashlib.md5(name.encode()).hexdigest(), 16) % baseLine)
+                order_id = int(formatted_timestamp) + hash_value
+                print(str(order_id) + " -> " + str(body))
                 push_data(order_id, body, type = 4)
             else:
                 print("business_time not found.")
