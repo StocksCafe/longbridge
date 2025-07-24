@@ -27,6 +27,8 @@ This project is to assist users in pulling data from their longbridge brokerage 
 Note: It will sync both cash transactions (both deposits and withdrawal) and orders (including stocks and options)
 
 9) Goto https://stocks.cafe and see that your longbridge data is now sync into StocksCafe!
+    
+10) Also, you should run "Sync Cash Balance Dividend" (Choose 'Sync All') on this page (https://stocks.cafe/portfolio/viewcashdetails) to populate dividends
 
 ## Subsequent Run
 
@@ -47,3 +49,9 @@ Note: It will sync both cash transactions (both deposits and withdrawal) and ord
 2) Simply go to this page (https://open.longportapp.com/en/account) and click "Reset Token"
 
 3) Then update LONGPORT_ACCESS_TOKEN and try clicking on "Sync LongBridge Data". It should now work.
+
+## Pull New Updates
+
+1) Go into "longbridge" directory (i.e. where code is cloned)
+
+2) Run "git pull"
