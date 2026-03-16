@@ -12,7 +12,7 @@ echo "📦 Building Docker image..."
 docker build -t autosync -f Dockerfile .
 
 echo "🚀 Running new container..."
-docker run -d --env-file .env -v ./.env:/app/.env --name autosync -p 8000:8000 autosync
+docker run -d --env-file .env --name autosync -p 8000:8000 autosync
 
 echo "📜 Following logs..."
 docker logs -tf autosync
